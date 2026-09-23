@@ -1,3 +1,6 @@
+import { appState } from "./state.js";
+import { saveConversations } from "./utils/conversations.js";
+
 async function copyTextToClipboard(text) {
   if (!text) return false;
 
@@ -23,11 +26,11 @@ async function copyTextToClipboard(text) {
   }
 }
 
-function appendActionButtons(element, conversationId, assistantIndex) {
+export function appendActionButtons(element, conversationId, assistantIndex) {
   if (!element || element.classList.contains("typing")) return;
   if (element.nextElementSibling && element.nextElementSibling.classList.contains("message-actions")) return;
 
-  const conversation = conversations.find((candidate) => candidate.id === conversationId);
+  const conversation = appState.conversations.find((candidate) => candidate.id === conversationId);
   const replyText = conversation && conversation.messages[assistantIndex] ? conversation.messages[assistantIndex].content : "";
 
   const actions = document.createElement("div");
@@ -56,15 +59,17 @@ function appendActionButtons(element, conversationId, assistantIndex) {
   element.insertAdjacentElement("afterend", actions);
 }
 
-async function regenerateAt(conversationId, assistantIndex) {
-  if (isSending) return;
-  const conversation = conversations.find((candidate) => candidate.id === conversationId);
+export async function regenerateAt(conversationId, assistantIndex) {
+  if (appState.isSending) return;
+
+  const conversation = appState.conversations.find((candidate) => candidate.id === conversationId);
   if (!conversation) return;
 
   const keep = Math.max(0, assistantIndex);
   conversation.messages = conversation.messages.slice(0, keep);
-  saveConversations();
-  renderConversationList();
-  renderMessages();
-  await askOllama(conversation);
+  saveConversations(appState.conversations, appState.storageKey);
+
+  if (appState.renderConversationList) appState.renderConversationList();
+  if (appState.renderMessages) appState.renderMessages();
+  if (appState.askOllama) await appState.askOllama(conversation);
 }
