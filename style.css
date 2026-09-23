@@ -3,7 +3,6 @@
   --roblox-blue-dark: #1f45d8;
   color: #27272a;
   background: #ffffff;
-  /* Use Apple's San Francisco system font where available, with sensible fallbacks */
   font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, system-ui, sans-serif;
 }
 
@@ -195,7 +194,7 @@ h1 {
   margin: 0;
   font-size: 18px;
   font-weight: 650;
-  color: #e4e4e7; /* same color as conversation holder text */
+  color: #e4e4e7; 
 }
 
 
@@ -203,7 +202,6 @@ h1 {
   flex: 1;
   padding: 28px;
   overflow-y: auto;
-  /* darker background with a more spaced dot grid for now */
   background-color: #0b0b0d;
   background-image: radial-gradient(circle, rgba(255,255,255,0.10) 1px, transparent 1px);
   background-size: 28px 28px;
